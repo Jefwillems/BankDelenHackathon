@@ -13,7 +13,7 @@ var wallet = new ethers.Wallet(privateKey, provider);
 router.post("/contract", function(req, res, next) {
     var address = req.body["address"];
     if (!address) {
-        res.status(500).json({ error: "address was not specified!" });
+        return res.status(500).json({ error: "address was not specified!" });
     }
     createContract(address, transaction => {
         transaction.etherscanUrl =
@@ -24,6 +24,23 @@ router.post("/contract", function(req, res, next) {
 
 router.post("/recipients", function(req, res, next) {
     var name = req.body["name"];
+    var amount = parseInt(req.body["amount"]);
+    var contractAddress = req.body["address"];
+    if (!name || !amount || !contractAddress) {
+        return res
+            .status(500)
+            .json({ error: "name or amount was not specified!" });
+    }
+    addRecipient(name, amount, contractAddress, transaction => {
+        if (!transaction) {
+            return res
+                .status(500)
+                .json({ error: "transaction was undefined." });
+        }
+        transaction.etherscanUrl =
+            "https://rinkeby.etherscan.io/tx/" + transaction.hash;
+        return res.json(transaction);
+    });
 });
 
 /* GET home page. */
@@ -39,9 +56,23 @@ var createContract = (_address, cb) => {
     );
 
     var sendPromise = wallet.sendTransaction(deployTransaction);
+
     sendPromise.then(function(transaction) {
+        var cAddress = ethers.utils.getContractAddress(transaction);
+        transaction.address = cAddress;
         cb(transaction);
     });
+};
+var addRecipient = (name, amount, address, cb) => {
+    console.log("getting contract at: " + address);
+    var contract = new ethers.Contract(address, abi, wallet);
+    console.log("sending promise");
+    var sendPromise = contract.addRecipient(name, amount);
+    sendPromise
+        .then(transaction => {
+            cb(transaction);
+        })
+        .catch(console.log);
 };
 
 module.exports = router;
