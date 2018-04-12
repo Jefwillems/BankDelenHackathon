@@ -1,4 +1,4 @@
-const contractAddress = "0x236215fB6cf1Aa8eC9320f95cE844Cb51EeE3171";
+//const contractAddress = "0x236215fB6cf1Aa8eC9320f95cE844Cb51EeE3171";
 
 function deployContract() {
   var walletAddress = "0xA6fEBbFe2F3eF562BD11C4Ba7d47c59b79358724";
@@ -20,14 +20,14 @@ function deployContract() {
       var amountField = document.getElementById("amount");
       amountField.disabled = false;
       document.getElementById("addHeir").onclick = function() {
-        addRecipient(nameField.value, amountField.value);
+        addRecipient(nameField.value, amountField.value,contractAddress);
       };
     })
     .catch(console.error);
 }
 
 //Adds recipient to the contract
-function addRecipient(name, amount) {
+function addRecipient(name, amount,contractAddress) {
   console.log("adding recipient");
   fetch("http://localhost:3000/api/recipients", {
     method: "post",
@@ -44,7 +44,7 @@ function addRecipient(name, amount) {
       return response.json();
     })
     .then(data => {
-      showRecipients();
+      showRecipients(contractAddress);
     })
     .catch(err => {
       console.log(err);
@@ -52,7 +52,7 @@ function addRecipient(name, amount) {
 }
 
 //Adds recipient to the contract
-function showRecipients() {
+function showRecipients(contractAddress) {
   console.log(
     `fetching recipients and their amount of money${contractAddress}`
   );
@@ -61,9 +61,12 @@ function showRecipients() {
   })
     .then(function(response) {
       return response.json();
-      //add response to html
     })
-    .then(console.log)
+    .then((recipient) => {
+      console.log(recipient);
+      //document.querySelector()
+    }
+    )
     .catch(err => {
       console.log(err);
     });
