@@ -30,13 +30,14 @@ function showRecipients() {
   console.log(
     `fetching recipients and their amount of money${contractAddress}`
   );
-  fetch("http://localhost:3000/api/recipients/", {
+  fetch("http://localhost:3000/api/recipients/" + contractAddress, {
     method: "get"
   })
     .then(function(response) {
       return response.json();
       //add response to html
     })
+    .then(console.log)
     .catch(err => {
       console.log(err);
     });
