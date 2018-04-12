@@ -14,6 +14,9 @@ function deployContract() {
     .then(res => res.json())
     .then(data => {
       console.log(data.etherscanUrl);
+      $("#etherscan").html(
+        `<a href="${data.etherscanUrl}">${data.etherscanUrl}</a>`
+      );
       var contractAddress = data.address;
       var nameField = document.getElementById("name");
       nameField.disabled = false;
