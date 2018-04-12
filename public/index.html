@@ -23,7 +23,7 @@
 
 </head>
 
-<body onLoad="showRecipients()">
+<body onLoad="">
 
 	<!-- Page Loader -->
 	<div id="loader-wrapper">
@@ -56,7 +56,7 @@
 							<div class="search-container">
 								<form action="#" method="get">
 									<input type="text" name="s" id="s" onblur="if(this.value=='')this.value='to search type and hit enter';" onfocus="if(this.value=='to search type and hit enter')this.value='';"
-									    value="to search type and hit enter" />
+									 value="to search type and hit enter" />
 								</form>
 								<div class="close-search">
 									<a class="sl sl-icon-close" href="#"></a>
@@ -71,7 +71,7 @@
 									<i class="fa fa-search search-trigger"></i>
 									<form action="#" method="get" class="responsive-search">
 										<input type="text" onblur="if(this.value=='')this.value='to search type and hit enter';" onfocus="if(this.value=='to search type and hit enter')this.value='';"
-										    value="to search type and hit enter" />
+										 value="to search type and hit enter" />
 									</form>
 								</div>
 
@@ -141,21 +141,27 @@
 
 			<div class="row">
 				<div class="col-md-12">
-					<div class="col-md-5">
+					<div class="col-md-2">
 						<div>
-							<input name="name" type="text" id="name" placeholder="Name of the heir" required="required" class="error">
+							<a href="#" class="button medium color" onclick="deployContract()">deploy</a>
 						</div>
 					</div>
 
-					<div class="col-md-5">
+					<div class="col-md-4">
 						<div>
-							<input name="amount" type="number" min="1" id="amount" placeholder="Amount (€)" required="required" class="error">
+							<input disabled name="name" type="text" id="name" placeholder="Name of the heir" required="required" class="error">
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div>
+							<input disabled name="amount" type="number" min="1" id="amount" placeholder="Amount (€)" required="required" class="error">
 						</div>
 					</div>
 
 					<div class="col-md-2">
 						<div>
-							<a href="#" class="button medium color" onclick="addRecipient()">Add</a>
+							<a class="button medium color" id="addHeir">Add</a>
 						</div>
 					</div>
 
@@ -218,13 +224,13 @@
 
 					</table>
 
-					
+
 				</div>
 			</div>
 
 
-			
-		
+
+
 
 		</div>
 		<!-- Container / End -->
