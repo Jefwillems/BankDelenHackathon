@@ -23,14 +23,14 @@ function deployContract() {
       var amountField = document.getElementById("amount");
       amountField.disabled = false;
       document.getElementById("addHeir").onclick = function() {
-        addRecipient(nameField.value, amountField.value,contractAddress);
+        addRecipient(nameField.value, amountField.value, contractAddress);
       };
     })
     .catch(console.error);
 }
 
 //Adds recipient to the contract
-function addRecipient(name, amount,contractAddress) {
+function addRecipient(name, amount, contractAddress) {
   console.log("adding recipient");
   fetch("http://localhost:3000/api/recipients", {
     method: "post",
@@ -47,7 +47,8 @@ function addRecipient(name, amount,contractAddress) {
       return response.json();
     })
     .then(data => {
-      showRecipients(contractAddress);
+      //showRecipients(contractAddress);
+      show.address = contractAddress;
     })
     .catch(err => {
       console.log(err);
@@ -65,12 +66,33 @@ function showRecipients(contractAddress) {
     .then(function(response) {
       return response.json();
     })
-    .then((recipient) => {
-      console.log(recipient);
+    .then(recipients => {
+      console.log(recipients);
+
       //document.querySelector()
-    }
-    )
+      for (var name in recipients) {
+        var template = `<tr>
+							          <td class="cart-title">
+								          ${name}
+							          </td>
+							          <td>${recipients[name]}€</td>
+							          <td>
+								          <a href="#" class="cart-remove"></a>
+							          </td>
+                      </tr>`;
+        $("#recipients").html(template);
+      }
+    })
     .catch(err => {
       console.log(err);
     });
 }
+
+var show = {
+  address: "",
+  refresh: function() {
+    if (this.address !== "") {
+      showRecipients(this.address);
+    }
+  }
+};
